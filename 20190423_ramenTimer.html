@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+undefined
+</style>
+</head>
+<body>
+<div id="root">
+  <p>
+    3分タイマー
+  </p>
+  <p>
+    <span id="out"></span>
+  </p>
+  <p>
+    <button id="btn">
+      開始
+    </button>
+  </p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="chrome-extension://lkfkkhfhhdkiemehlpkgjeojomhpccnh/lib/transpilers/babel-polyfill.min.js"></script><script>
+"use strict";
+
+var out = document.getElementById("out");
+var btn = document.getElementById("btn");
+var rest = 180;
+var isStart = false;
+
+btn.addEventListener("click", function () {
+  rest = 180;
+  isStart = true;
+});
+
+setInterval(function () {
+  if (isStart == true) {
+    if (rest > 0) {
+      rest--;
+    }
+  };
+  out.innerHTML = "残り" + rest + "秒";
+}, 1000);
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
