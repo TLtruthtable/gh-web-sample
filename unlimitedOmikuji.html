@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+.btn{
+  width: 100%;
+  font-size: 15px;
+}
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="title">
+    無限おみくじ
+  </p>
+  <p class="in">
+    <button class="btn" v-on:click="draw">
+      引く
+    </button>
+  </p>
+  <p class="result">
+    <span>大吉:{{dai}}</span>
+    <span>中吉:{{chu}}</span>
+    <span>小吉:{{sho}}</span>
+    <span>吉:{{kichi}}</span>
+    <span>末吉:{{sue}}</span>
+  </p>
+  <p>
+    <span>合計:{{total}}</span>    
+  </p>
+  <p class="out">
+    <ol>
+      <li v-for="i in omikujis">{{i}}</li>
+    </ol>
+  </p>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="https://webmakerapp.com/app/lib/transpilers/babel-polyfill.min.js"></script><script>
+"use strict";
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    omikujis: [],
+    dai: 0,
+    chu: 0,
+    sho: 0,
+    kichi: 0,
+    sue: 0,
+    total: 0
+  },
+  methods: {
+    draw: function draw() {
+      var n = Math.floor(Math.random() * 5);
+      var msg = "";
+      if (n == 0) {
+        msg = "大";
+        this.dai++;
+      } else if (n == 1) {
+        msg = "中";
+        this.chu++;
+      } else if (n == 2) {
+        msg = "小";
+        this.sho++;
+      } else if (n == 3) {
+        msg = "末";
+        this.sue++;
+      } else {
+        msg = "";
+        this.kichi++;
+      }
+      this.total++;
+      this.omikujis.push(msg + "吉");
+    }
+  }
+});
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
