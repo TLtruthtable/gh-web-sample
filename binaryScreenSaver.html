@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+body{
+  background-color: black;
+}
+.console{
+  width: 100%;
+  word-wrap: break-word;
+  color: white;
+  position: absolute;
+  bottom: 0;
+}
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="console">
+    {{t}}
+  </p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="https://webmakerapp.com/app/lib/transpilers/babel-polyfill.min.js"></script><script>
+"use strict";
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    t: ""
+  }
+});
+
+setInterval(function () {
+  var str = "";
+  str = Math.floor(Math.random() * 2).toString();
+  app.t += str;
+}, 1);
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
