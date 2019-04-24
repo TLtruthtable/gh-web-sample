@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+.btn{
+  font-size: 20px;
+  width: 50%;
+  height: 20%;
+}
+.title{
+  font-size: 20px;
+}
+.dice{
+  font-size: 30px;
+}
+.ttl{
+  font-size: 40px;
+  color: red;
+}
+
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="title">
+    サイコロ
+  </p>
+  <p class="dice">
+    <span>{{d1}}</span>
+    <span>{{d2}}</span>
+    <span>{{d3}}</span>    
+  </p>
+  <p class="ttl">
+    <span>total:{{total}}</span>
+  </p>
+  <p>
+    <button class="btn" @click="roll">
+      roll
+    </button>
+  </p>
+  
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="chrome-extension://lkfkkhfhhdkiemehlpkgjeojomhpccnh/lib/transpilers/babel-polyfill.min.js"></script><script>
+'use strict';
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    d1: 1,
+    d2: 1,
+    d3: 1
+  },
+  methods: {
+    roll: function roll() {
+      this.d1 = Math.ceil(Math.random() * 6);
+      this.d2 = Math.ceil(Math.random() * 6);
+      this.d3 = Math.ceil(Math.random() * 6);
+    }
+  },
+  computed: {
+    total: function total() {
+      return this.d1 + this.d2 + this.d3;
+    }
+  }
+});
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
