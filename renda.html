@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+.title{
+  width: 100%;
+  margin: auto;
+  font-size: 30px;
+}
+.disp{
+  font-size: 50px;
+  margin: 10px auto;
+}
+.btnCnt{
+  width: 100%;
+  height: 50px;
+  font-size: 30px;
+}
+.btnRst{
+  font-size: 20px;
+  align-content: center;
+  margin: 20px auto;
+  width: 50%;
+}
+.mt{
+  width: 100%;
+  height: 30px;
+}
+.rest{
+  font-size: 40px;
+}
+</style>
+</head>
+<body>
+<div id="root">
+  <p>
+    <span class="title">連打ゲーム</span>
+  </p>
+  <p>
+    <span class="disp">カウント:{{count}}</span>
+  </p>
+  <p>
+    <span class="rest">あと{{tim}}秒</span>
+  </p>
+  <p>
+    <meter class="mt" v-bind:value="count" min="0" max="100" low="30" high="60"></meter>
+  </p>
+  <p>
+    <button class="btnCnt" v-if="tim>0" @click="cnt">
+      カウント
+    </button>
+  </p>
+  <p>
+    <button class="btnRst" @click="rst">
+      reset
+    </button>
+  </p>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="chrome-extension://lkfkkhfhhdkiemehlpkgjeojomhpccnh/lib/transpilers/babel-polyfill.min.js"></script><script>
+'use strict';
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    count: 0,
+    tim: 10
+  },
+  methods: {
+    cnt: function cnt() {
+      this.count++;
+    },
+    rst: function rst() {
+      this.count = 0;
+      this.tim = 10;
+    }
+  }
+});
+
+setInterval(function () {
+  if (app.tim > 0) {
+    app.tim--;
+  }
+}, 1000);
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
