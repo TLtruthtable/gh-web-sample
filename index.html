@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+.ttl{
+  font-size: 30px;
+}
+.content{
+  font-size: 20px;
+}
+</style>
+</head>
+<body>
+<title>TLtruthtable</title>
+<div id="root">
+  <p class="ttl">
+    作品一覧
+  </p>
+  <p v-for="item in items" :key="item.id">
+    <a :href="item.link" class="content">{{item.txt}}</a>
+  </p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="chrome-extension://lkfkkhfhhdkiemehlpkgjeojomhpccnh/lib/transpilers/babel-polyfill.min.js"></script><script>
+"use strict";
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    items: [{ id: 0, txt: "ラーメンタイマー", link: "./20190423_ramenTimer.html" }, { id: 1, txt: "ポモドーロタイマー", link: "./20190418_barTimer_V0_03.html" }, { id: 2, txt: "サイコロ", link: "./3_dices.html" }, { id: 3, txt: "10進_16進変換", link: "./dec_to_hex.html" }, { id: 4, txt: "連打ゲーム", link: "./renda.html" }, { id: 5, txt: "無限おみくじ", link: "./unlimitedOmikuji.html" }, { id: 6, txt: "コンソール風スクリーンセーバーもどき", link: "binaryScreenSaver.html" }]
+  }
+});
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
