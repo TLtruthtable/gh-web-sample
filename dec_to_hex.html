@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="title">
+    DEC => HEX変換器
+  </p>
+  <p>
+    dec:
+    <input type="text" v-model:value="dec">
+  </p>
+  <p>
+    <span>HEX: 0x{{toHex}}</span>
+  </p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="chrome-extension://lkfkkhfhhdkiemehlpkgjeojomhpccnh/lib/transpilers/babel-polyfill.min.js"></script><script>
+'use strict';
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    dec: 0
+  },
+  computed: {
+    toHex: function toHex() {
+      if (parseInt(this.dec) >= 0) {
+        return parseInt(this.dec).toString(16);
+      }
+    }
+  }
+});
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
