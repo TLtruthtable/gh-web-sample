@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+.out{
+  font-size: 50px;
+}
+.btn{
+  width: 10%;
+  height: 100px;
+  font-size: 50px;
+}
+</style>
+</head>
+<body>
+<title>2進数_10進数変換器</title>
+<div id="root">
+  <p class="out">
+    2進数_10進数変換器
+  </p>
+  <p class="out">
+    {{bin}}
+  </p>
+  <p class="out">
+    {{dec}}
+  </p>
+  <button class="btn" v-for="i in items" :key="i.id" :style="{background: i.color}" @click="toggleColor(i)">
+    {{i.text}}
+  </button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="https://webmakerapp.com/app/lib/transpilers/babel-polyfill.min.js"></script><script>
+"use strict";
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    items: [{ id: 0, text: "0", color: "white", bit: false }, { id: 1, text: "0", color: "white", bit: false }, { id: 2, text: "0", color: "white", bit: false }, { id: 3, text: "0", color: "white", bit: false }, { id: 4, text: "0", color: "white", bit: false }, { id: 5, text: "0", color: "white", bit: false }, { id: 6, text: "0", color: "white", bit: false }, { id: 7, text: "0", color: "white", bit: false }]
+  },
+  methods: {
+    toggleColor: function toggleColor(i) {
+      if (i.bit == false) {
+        i.color = "red";
+        i.text = "1";
+      } else {
+        i.color = "white";
+        i.text = "0";
+      }
+      i.bit = !i.bit;
+    }
+  },
+  computed: {
+    bin: function bin() {
+      var ret = "";
+      for (var i = 0; i < this.items.length; i++) {
+        ret += this.items[i].text;
+      }
+      return ret;
+    },
+    dec: function dec() {
+      var ret2 = "";
+      for (var i = 0; i < this.items.length; i++) {
+        ret2 += this.items[i].text;
+      }
+      return parseInt(ret2, 2);
+    }
+  }
+});
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
