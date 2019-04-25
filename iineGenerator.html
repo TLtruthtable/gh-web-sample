@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+undefined
+</style>
+</head>
+<body>
+<div id="root">
+  <p>
+    <button class="pushBtn" @click="push">
+      いいね!
+    </button>
+  </p>
+  <p>
+    auto:
+    <input type="button" @click="enableAuto" value="set">
+    <input type="button" @click="disableAuto" value="stop">    
+    周期: <input type="text" v-model:value="freq">
+  </p>
+  <p>
+    <span>{{cnt}}いいね</span>
+  </p>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.9/push.min.js"></script>
+<script src="https://webmakerapp.com/app/lib/transpilers/babel-polyfill.min.js"></script><script>
+'use strict';
+
+var freqLim = 100;
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    cnt: 0,
+    isAuto: false,
+    freq: 1000,
+    timer: null
+  },
+  methods: {
+    push: function push() {
+      Push.create('いいね！', {
+        body: 'いいね！',
+        timeout: 1000,
+        freqLim: 100
+      });
+      this.cnt++;
+    },
+    enableAuto: function enableAuto() {
+      this.freq = parseInt(this.freq);
+      if (this.freq < freqLim) {
+        this.freq = freqLim;
+      }
+      this.timer = setInterval(function () {
+        Push.create('いいね！', {
+          body: 'いいね！',
+          timeout: app.freq
+        });
+        app.cnt++;
+      }, app.freq);
+    },
+    disableAuto: function disableAuto() {
+      clearInterval(this.timer);
+    }
+  }
+});
+
+Push.Permission.request();
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
