@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+undefined
+</style>
+</head>
+<body>
+<div id="root">
+  <p>郵便番号_住所変換</p>
+  <p>
+    郵便番号:
+    <input type="number" v-model:value="dtZip">
+    <button @click="req()" v-if="requested==false">
+      request
+    </button>
+  </p>
+  <p>
+    <span>{{address}}</span>
+  </p>
+  <p>
+    <span>住所長さ:{{zipcode_power}}</span>
+  </p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+<script src="chrome-extension://lkfkkhfhhdkiemehlpkgjeojomhpccnh/lib/transpilers/babel-polyfill.min.js"></script><script>
+"use strict";
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    dtZip: "",
+    address: "",
+    zipcode: "",
+    requested: false
+  },
+  methods: {
+    req: function req() {
+      var _this = this;
+
+      axios.get('http://zipcloud.ibsnet.co.jp/api/search?zipcode=' + parseInt(this.dtZip)).then(function (response) {
+        return _this.zipcode = response.data.results[0];
+      });
+      this.requested = true;
+      setTimeout(function () {
+        app.requested = false;
+      }, 5000);
+    }
+  },
+  computed: {
+    zipcode_power: function zipcode_power() {
+      if (this.requested) {
+        // var t = this.zipcode.toString();
+        this.address = this.zipcode.address1 + this.zipcode.address2 + this.zipcode.address3;
+        return this.address.length;
+      } else {
+        return "";
+      }
+    }
+  }
+});
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
