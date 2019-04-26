@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+.title{
+  font-size: 30px;
+}
+
+.rst{
+  font-size: 20px;
+}
+
+.tile{
+  display: table-cell;
+  margin: 0;
+  background: gray;
+  width: 10%;
+  height: 50px;
+  background: yellow;
+  animation: chika_slow 1s infinite alternate;
+  font-size: 20px;
+}
+
+@keyframes chika_slow{
+  0%{
+    background: #ffbb00;
+  }
+  100%{
+    background: yellow;
+  }
+}
+
+.hazure{
+  background: brown;
+  color: white;
+  width: 10%;
+  height: 50px;
+  transition: all 1s;
+  font-size: 20px;
+}
+.atari{
+  background: red;
+  width: 10%;
+  height: 50px;
+  transition: all 1s;
+  animation: chikachika 0.1s infinite alternate;
+  font-size: 20px;
+}
+
+@keyframes chikachika{
+  0%{
+    background: red;
+  }
+  100%{
+    background: yellow;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div id="root">
+  <p class="title">
+    くじ引き
+  </p>
+  <button :class="i.c" v-for="(i, index) in dt" @click="check(index)">
+    {{i.t}}
+  </button>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="chrome-extension://lkfkkhfhhdkiemehlpkgjeojomhpccnh/lib/transpilers/babel-polyfill.min.js"></script><script>
+"use strict";
+
+var atariNo = Math.floor(Math.random() * 100);
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    dt: [{ t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }, { t: "?", c: "tile" }]
+  },
+  methods: {
+    check: function check(index) {
+      if (atariNo == index) {
+        this.dt[index].t = "○";
+        this.dt[index].c = "atari";
+      } else {
+        this.dt[index].t = "X";
+        this.dt[index].c = "hazure";
+      }
+    },
+    reset: function reset() {
+      atariNo = Math.floor(Math.random() * 10);
+    }
+  }
+});
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
