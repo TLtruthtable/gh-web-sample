@@ -16,7 +16,7 @@
 <title>TLtruthtable</title>
 <div id="root">
   <p class="ttl">
-    作品一覧
+    練習場
   </p>
   <p v-for="item in items" :key="item.id">
     <a :href="item.link" class="content">{{item.txt}}</a>
@@ -43,6 +43,8 @@ var app = new Vue({
       { id: 9, txt: "床屋の看板", link: "./barberPole.html"},
       { id: 10, txt: "郵便番号_住所変換", link: "./zipToAddress.html"},
       { id: 11, txt: "くじ引き", link: "./kujibiki.html"},
+      { id: 12, txt: "ハムスター小屋", link: "./hamster.html"},
+      { id: 13, txt: "ランダムウォーク", link: "./randomWalk.html"},
     ]
   }
 });
