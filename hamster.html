@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+svg{
+  display: inline-block;
+  width: 100%;
+  height: 350px;
+}
+circle{
+  transition-duration: 1s;
+}
+</style>
+</head>
+<body>
+<div id="root">
+  <svg x="350px" y="350px">
+    <rect x="10" y="10" width="300" height="300" fill="#ffbb00"></rect>
+    <circle v-for="i in kotai" :key="i.id" :cx="i.x" :cy="i.y" r="10" :fill="i.cl"></circle>
+  </svg>
+  <button @click="move">
+    move
+  </button>
+  <button @click="add">
+    add
+  </button>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="chrome-extension://lkfkkhfhhdkiemehlpkgjeojomhpccnh/lib/transpilers/babel-polyfill.min.js"></script><script>
+"use strict";
+
+var tick = 1000;
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    cl: "black",
+    cl_index: ["black", "brown", "gray", "white"],
+    kotai: [
+    	{ id: 0, x: 100, y: 100, cl: "black" },
+    	{ id: 1, x: 100, y: 100, cl: "brown" },
+    	{ id: 2, x: 100, y: 100, cl: "gray" },
+    ]
+  },
+  methods: {
+    move: function move() {
+      var i = Math.floor(Math.random() * this.kotai.length);
+      this.kotai[i].x = Math.random() * 300 + 25;
+      this.kotai[i].y = Math.random() * 300 + 25;
+      tick = Math.random() * 1000;
+    },
+    add: function add() {
+    	var newcl = this.cl_index[Math.floor(Math.random()*this.cl_index.length)];
+    	var newx = Math.random() * 300 + 25;
+    	var newy = Math.random() * 300 + 25;
+    	this.kotai.push({ id: this.kotai.length, x: newx, y: newy, cl: newcl });
+    }
+  }
+});
+
+setInterval(function () {
+  app.move();
+}, tick);
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
