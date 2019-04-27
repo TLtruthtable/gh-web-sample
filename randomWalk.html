@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+svg{
+  display: inline-block;
+  width: 500px;
+  height: 500px;
+  background: black;
+}
+line{
+  stroke: white;
+}
+
+</style>
+</head>
+<body>
+<div id="root">
+  <svg x="500px" y="500px">
+    <line v-for="(i, index) in lines" :key="index" :x1="i.sx" :y1="i.sy" :x2="i.gx" :y2="i.gy" stroke="black"></line>
+  </svg>
+  <P>
+    <input type="range" v-model:value="step" min="1" max="100">
+    <span>stepLength:{{step}}</span>
+  </P>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.3.0/ical.min.js"></script>
+<script src="chrome-extension://lkfkkhfhhdkiemehlpkgjeojomhpccnh/lib/transpilers/babel-polyfill.min.js"></script><script>
+'use strict';
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    lines: [{ sx: 250, sy: 250, gx: 250, gy: 250 }],
+    step: 10
+  },
+  methods: {
+    add: function add() {
+      var nx = this.lines[this.lines.length - 1].gx + (Math.random() * this.step - this.step / 2);
+      var ny = this.lines[this.lines.length - 1].gy + (Math.random() * this.step - this.step / 2);
+      if (nx < 0) {
+        nx = 0;
+      } else if (nx > 500) {
+        nx = 500;
+      }
+      if (ny < 0) {
+        ny = 0;
+      } else if (ny > 500) {
+        ny = 500;
+      }
+      this.lines.push({
+        sx: this.lines[this.lines.length - 1].gx,
+        sy: this.lines[this.lines.length - 1].gy,
+        gx: nx,
+        gy: ny
+      });
+    }
+  }
+});
+
+setInterval(function () {
+  app.add();
+}, 100);
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
