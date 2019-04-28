@@ -90,7 +90,10 @@ var app = new Vue({
       this.view_ptStart += this.windowLimit;
     },
     decPtStart: function decPtStart() {
-      this.view_ptStart += this.windowLimit;
+      this.view_ptStart -= this.windowLimit;
+      if (this.view_ptStart <= 0) {
+        this.view_ptStart = 1;
+      }
     }
   },
   computed: {
