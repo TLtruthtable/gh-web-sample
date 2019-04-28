@@ -18,6 +18,7 @@
 <div id="root">
   <ol>
     使い方
+    <li>ブラウザのポップアップブロック機能をOFFにする</li>
     <li>テキストボックスに、検索キーワードを入力</li>
     <li>URL生成ボタンを押す</li>
     <li>
@@ -41,16 +42,17 @@
         まとめて検索
       </button>
       <span>{{view_ptStart}}行目〜{{ptEnd}}行目</span>
-      <li>
-        <input type="text" class="viewSt" v-model:value.number="view_ptStart">行目から検索
-        <button @click="decPtStart()">
-          -{{windowLimit}}
-        </button>
-        <button @click="incPtStart()">
-          +{{windowLimit}}
-        </button>
-      </li>
     </li>
+    <li>
+      <input type="text" class="viewSt" v-model:value.number="view_ptStart">行目から検索
+      <button @click="decPtStart()">
+        -{{windowLimit}}
+      </button>
+      <button @click="incPtStart()">
+        +{{windowLimit}}
+      </button>
+    </li>
+    <li><input type="range" v-model:value.number="wait_s" min="1" max="30">sleep:{{wait_s}}[s]</li>
     <li>line:{{line}}</li>
     <li>生成URLs:{{urls}}</li>
   </ul>
@@ -67,16 +69,27 @@ var app = new Vue({
     urls: [],
     baseUrl: "https://www.google.com/search?q=",
     windowLimit: 20,
-    view_ptStart: 1
+    view_ptStart: 1,
+    urlsQueue: [],
+    wait_s: 5,
+    search: null
   },
   methods: {
     allWindowOpen: function allWindowOpen() {
+      clearInterval(this.search);
       this.genUrl();
+      this.urlsQueue = [];
       for (var i = this.ptStart; i < this.ptEnd; i++) {
-        if (i < this.line.length) {
-          open(this.urls[i]);
+        if (i < this.urls.length) {
+          this.urlsQueue.push(this.urls[i]);
         }
       }
+      this.search = setInterval(function () {
+        if (app.urlsQueue.length >= 1) {
+          open(app.urlsQueue[0]);
+          app.urlsQueue.shift();
+        }
+      }, app.wait_s * 1000);
     },
     genUrl: function genUrl(q) {
       this.urls = [];
