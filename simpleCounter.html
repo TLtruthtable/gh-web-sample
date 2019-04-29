@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    .list li{
+      display: inline-block;
+      margin:0%;
+      width:100%;
+      height:50px;
+      font-size: 30px;
+    }
+    .btn{
+      width:10%;
+      font-size: 20px
+    }
+    .disp{
+      width:10%;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <p>{{title}}</p>
+    <ul class="list">
+      <li>
+        <span class="disp">{{v_count}}</span>
+        <button class="btn" @click="inc">
+          +1
+        </button>
+        <button class="btn" @click="dec">
+          -1
+        </button>
+        </li>
+    </ul>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+  <script src="chrome-extension://lkfkkhfhhdkiemehlpkgjeojomhpccnh/lib/transpilers/babel-polyfill.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "カウンター",
+      count: 0,
+    },
+    methods: {
+      inc: function(){
+        this.count++;
+      },
+      dec: function(){
+        this.count--;
+      }
+    },
+    computed: {
+      v_count: function(){
+        var c = this.count.toString();
+        var length = c.length;
+        return ('00000000' + this.count).slice(length);
+      }
+    }
+  });
+  </script>
+</body>
+</html>
