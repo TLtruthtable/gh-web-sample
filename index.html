@@ -15,8 +15,9 @@
 <body>
 <title>TLtruthtable</title>
 <div id="root">
+  <title>{{title}}</title>
   <p class="ttl">
-    練習場
+    {{title}}
   </p>
   <p v-for="item in items" :key="item.id">
     <a :href="item.link" class="content">{{item.txt}}</a>
@@ -30,6 +31,7 @@
 var app = new Vue({
   el: '#root',
   data: {
+    title: "練習場",
     items: [
       { id: 0, txt: "ラーメンタイマー", link: "./20190423_ramenTimer.html" },
       { id: 1, txt: "ポモドーロタイマー", link: "./20190418_barTimer_V0_03.html" },
