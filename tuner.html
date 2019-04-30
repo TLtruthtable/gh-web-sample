@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    .title{
+      font-size: 30px;
+    }
+    .disc{
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <div class="title">{{title}}</div>
+    <ol>
+      <li>出したい音階を入力します</li>
+      <li>「start」を押すと、音が出ます</li>
+      <li>「stop」を押すと、音が止まります</li>
+      </li>
+    </ol>
+    <div class="disc">
+      音階<input class="disc" type="text" v-model:value="freq">
+    </div>
+    <button class="disc" @click="start">start</button>
+    <button class="disc" @click="stop">stop</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script src="https://tonejs.github.io/build/Tone.js"></script>
+  <script>
+  "use strict";
+
+  const synth = new Tone.Synth().toMaster();
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "チューナー",
+      freq: 'C4',
+      timer: null,
+    },
+    methods: {
+      start: function(){
+        clearInterval(this.timer);
+        synth.triggerAttackRelease(app.freq, '1m');
+        this.timer = setInterval(function(){
+          synth.triggerAttackRelease(app.freq, '1m');
+        },2000);
+      },
+      stop: function(){
+        clearInterval(this.timer);
+      }
+    }
+  });
+  </script>
+</body>
+</html>
