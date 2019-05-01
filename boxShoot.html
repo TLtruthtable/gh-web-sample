@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.12.0/matter.js"></script>
+  <script>
+  "use strict";
+
+  var Engine = Matter.Engine;
+  var Render = Matter.Render;
+  var World = Matter.World;
+  var Bodies = Matter.Bodies;
+  var Body = Matter.Body;
+
+  var engine = Engine.create();
+  var render = Render.create({
+    element: document.body,
+    engine: engine
+  });
+
+  Engine.run(engine);
+  Render.run(render);
+
+  World.add(engine.world, [
+    Bodies.rectangle(400,610,810,50,{isStatic: true}),
+    Bodies.rectangle(800,300,50,600,{isStatic: true})
+  ]);
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "boxShute",
+    }
+  });
+
+  setInterval(function(){
+    var rectRound = 200;
+    var w = Math.ceil(Math.random() * rectRound/4);
+    var h = (rectRound/2) - w;
+    var a = Bodies.rectangle(50,500,w,h);
+    var scalar = 20;
+    var angle = Math.PI / 2 * Math.random();
+    var vx = Math.sin(angle) * scalar;
+    var vy = Math.cos(angle) * -scalar;
+    Body.setVelocity(a, {x: vx, y:vy});
+    Body.rotate(a, Math.PI * (Math.random()));
+    World.add(engine.world, [
+      a
+    ]);
+  }, 1000);
+  </script>
+</body>
+</html>
