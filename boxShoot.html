@@ -54,6 +54,7 @@
     var vy = Math.cos(angle) * -scalar;
     Body.setVelocity(a, {x: vx, y:vy});
     Body.rotate(a, Math.PI * (Math.random()));
+    Body.setAngularVelocity(a, (Math.random()-0.5)*0.5);
     World.add(engine.world, [
       a
     ]);
