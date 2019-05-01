@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    svg{
+      width: 500px;
+      height: 1000px;
+      animation: furiko 2s infinite ease-in-out alternate;
+    }
+    @-webkit-keyframes furiko{
+      0%{
+        transform-origin: 250 0;
+        transform: rotate(-30deg);
+      }
+      100%{
+        transform-origin: 250 0;
+        transform: rotate(30deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <svg>
+      <circle cx="250" cy="800" r="50" fill="none" stroke="yellow" stroke-width="50"></circle>
+      <line x1="250" y1="500" x2="250" y2="775" stroke="black"></line>
+    </svg>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "振り子",
+    }
+  });
+  </script>
+</body>
+</html>
