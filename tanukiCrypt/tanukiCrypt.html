@@ -2,12 +2,58 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <style>
-  </style>
 </head>
 <body>
+  <style>
+    .blk{
+      display: block;
+      width: 100%;
+    }
+    .form{
+      width: 100%;
+      height: 50px;
+      font-size: 100%;
+    }
+    .centerBlk{
+      display: inline-block;
+      width: 100%;
+    }
+    .btn{
+      height: 50px;
+      width: 30%;
+      font-size: 100%;
+    }
+    .tanuki{
+      height: 50px;
+    }
+  </style>
   <div id="root">
     <title>{{title}}</title>
+    <ol>
+      <li>「原文」欄に、暗号化したい文字列を入力する</li>
+      <li>暗号化レベルを設定する(暗号化レベルが大きいと、「た」の数が増える)</li>
+      <li>「暗号化」を押す</li>
+      <ul>
+        <li>「暗号文」欄に、暗号化された文字列が出力される</li>
+      </ul>
+    </ol>
+    <ul>
+      <li>注意：この暗号は、安全ではありません。</li>
+    </ul>
+    <div class="blk">
+      <textarea class="form" v-model:value="form_in"></textarea>
+    </div>
+    <div class="centerBlk">
+      <button class="btn" @click="encrypt()">暗号化</button>
+      <img class="tanuki" src="./img/tanuki.png">
+      <input type="range" v-model:value.number="cryptLv" min="1" max="100">暗号化レベル:{{cryptLv}}
+    </div>
+    <div class="blk">
+      <textarea class="form" v-model:value="form_out"></textarea>
+    </div>
+    <div>
+      <button class="btn" @click="clearForm()">clear</button>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
@@ -18,7 +64,34 @@
   var app = new Vue({
     el: '#root',
     data: {
-      title: "練習場",
+      title: "たぬき式暗号機",
+      form_in: "",
+      form_out: "",
+      cryptLv: 1,
+    },
+    methods: {
+      encrypt: function(){
+        this.warn_ta();
+
+        var len = this.form_in.length;
+        var buf = "";
+        for(var i=0;i < len;i++){
+          buf += this.form_in.charAt(i);
+          var addNumTa = Math.ceil(Math.random() * this.cryptLv);
+          buf += "た".repeat(addNumTa);
+        }
+        this.form_out = buf;
+      },
+      warn_ta: function(){
+        var idx_Ta = this.form_in.indexOf("た");
+        if(idx_Ta >= 0){
+          alert("原文に「た」が含まれています！\n正しく復元できない可能性があります")
+        }
+      },
+      clearForm: function(){
+        this.form_in = "";
+        this.form_out = "";
+      }
     }
   });
   </script>
