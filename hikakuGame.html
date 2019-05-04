@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    .svg{
+      width: 100%;
+      height: 100px;
+      background-color: aqua;
+    }
+    .disp{
+      color: black;
+    }
+    .btn{
+      width: 10%;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <ol>
+      <li>スタートを押します</li>
+      <li>大きい方の数字を押すと、点が入ります</li>
+      <li>同じ数字の場合、どちらでも点が入ります</li>
+    </ol>
+    <svg>
+      <text class="disp" x="50" y="50" font-size="50" @click="saiten('l')">{{left}}</text>
+      <text class="disp" x="150" y="50" font-size="50" @click="saiten('r')">{{right}}</text>
+    </svg>
+    <div width="150px">
+      <span>
+        score: {{score}}
+      </span>
+    </div>
+    <div>
+      残り時間: {{rest}}
+      <meter min="0" max="30" :value="rest"></meter>
+    </div>
+    <div>
+      <button class="btn" @click="init()">リセット/スタート</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "比較ゲーム",
+      left: "0",
+      right: "0",
+      score: 0,
+      rest: 0,
+      timer: null,
+    },
+    methods: {
+      init: function(){
+        clearInterval(this.timer);
+        this.create();
+        this.rest = 30;
+        this.timer = setInterval(function(){
+          if(app.rest > 0){
+            app.rest--;
+          }
+        }, 1000);
+      },
+      create: function(){
+        this.left = Math.ceil(Math.random() * 9);
+        this.right = Math.ceil(Math.random() * 9);
+      },
+      saiten: function(key){
+        if(this.rest > 0){
+          if((key == "l") && (this.left >= this.right)){
+            this.score++;
+          }
+          else if((key == "r") && (this.left <= this.right)){
+            this.score++;
+          }else{
+            this.score--;
+          }
+          this.create();
+        }
+      }
+    }
+  });
+  </script>
+</body>
+</html>
