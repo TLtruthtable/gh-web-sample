@@ -60,6 +60,7 @@
     methods: {
       init: function(){
         clearInterval(this.timer);
+        this.score = 0;
         this.create();
         this.rest = 30;
         this.timer = setInterval(function(){
