@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <svg width="640" height="480">
+        <rect x="0" y="0" width="640" height="480" fill="#ccc"></rect>
+        <circle v-for="i in items" :key="i.id" :cx="i.x" :cy="i.y" :r="r" fill="#888"></circle>
+    </svg>
+    <svg width="640" height="50">
+      <text x="50" y="25" font-size="30px" @click="inc()">{{cnt}}</text>
+    </svg>
+    <div>
+      <input type="range" v-model:value="r">雨粒の大きさ:{{r}}
+    </div>
+    <div>
+      <input type="range" v-model:value="freq">周期:{{freq}}[ms]
+    </div>
+    <div>
+      <button @click="reset" width="100px" height="100px" font-size="30px">スタート/リセット</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "雨の降り始め",
+      r: "20",
+      cnt: 0,
+      items: [],
+      correct: 0,
+      freq: 100,
+      timer: null,
+    },
+    methods: {
+      inc: function(){
+        this.cnt++;
+        var px = (Math.random()*640).toString();
+        var py = (Math.random()*480).toString();
+        this.items.push({id:this.cnt, x:px, y:py})
+      },
+      reset: function(){
+        this.cnt = 0;
+        this.items = [];
+        clearInterval(this.timer);
+        this.timer = setInterval(function(){
+          app.inc();
+        }, app.freq);
+      },
+    },
+    watch: {
+      freq: function(){
+        clearInterval(this.timer);
+        this.timer = setInterval(function(){
+          app.inc();
+        }, app.freq);
+      }
+    }
+  });
+  </script>
+</body>
+</html>
