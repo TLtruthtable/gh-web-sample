@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <span>{{title}}</span>
+    <div>
+      <span>alpha:{{alpha}} beta:{{beta}} gamma:{{gamma}}</span>
+    </div>
+    <div>
+      傾き感度:{{gain}}
+      <input type="range" v-model:value="gain" min="1" max="10">
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.12.0/matter.js"></script>
+  <script>
+  "use strict";
+
+  var deviceOrientation = window.orientation;
+  window.addEventListener("deviceorientation", function devicemotionHandler(e){}, false);
+
+  var Engine = Matter.Engine;
+  var Render = Matter.Render;
+  var World = Matter.World;
+  var Bodies = Matter.Bodies;
+
+  var engine = Engine.create();
+  var render = Render.create({
+    element: document.body,
+    engine: engine
+  });
+
+  Engine.run(engine);
+  Render.run(render);
+
+  World.add(engine.world, [
+    Bodies.rectangle(400,0,810,50,{isStatic: true}),
+    Bodies.rectangle(400,610,810,50,{isStatic: true}),
+    Bodies.rectangle(0,300,50,610,{isStatic: true}),
+    Bodies.rectangle(800,300,50,610,{isStatic: true}),
+    Bodies.rectangle(400,100,50,200,{isStatic: true}),
+    Bodies.rectangle(400,500,50,200,{isStatic: true}),
+  ]);
+
+  var f = 0.03;
+  var r = 0.4;
+  World.add(engine.world, [
+    Bodies.circle(100,100,30,{density: 1, friction: f, restitution: r}),
+    Bodies.circle(100,200,30,{density: 1, friction: f, restitution: r}),
+    Bodies.circle(100,300,30,{density: 1, friction: f, restitution: r}),
+    Bodies.rectangle(100,400,50,50,{density: 10, friction: f, restitution: r}),
+    Bodies.rectangle(100,500,50,50,{density: 10, friction: f, restitution: r}),
+    Bodies.rectangle(100,600,50,50,{density: 10, friction: f, restitution: r}),
+  ]);
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "傾けて遊ぶやつ",
+      alpha: 0,
+      beta: 0,
+      gamma: 0,
+      gain: 1,
+    },
+    methods: {
+      dv: function(e){
+        this.alpha = e.alpha;
+        this.beta = e.beta;
+        this.gamma = e.gamma;
+
+        engine.world.gravity.x = e.gamma / 180 * this.gain;
+        engine.world.gravity.y = e.beta / 180 * this.gain;
+      }
+    },
+    mounted: function(){
+      window.addEventListener("deviceorientation", this.dv, false);
+    },
+    destroyed: function(){
+      window.removeEventListener("deviceorientation", this.dv, false);
+    }
+  });
+
+  </script>
+</body>
+</html>
