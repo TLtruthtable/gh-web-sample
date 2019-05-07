@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    img{
+      animation: rotY 5s infinite ease alternate;
+    }
+    @keyframes rotY{
+      0%{
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+      }
+      100%{
+        transform: rotateX(360deg) rotateY(360deg) rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <img src="./fireExit.png">
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "動く非常口",
+    }
+  });
+  </script>
+</body>
+</html>
