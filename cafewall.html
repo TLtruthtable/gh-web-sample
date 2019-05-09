@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <svg width="500" height="500">
+      <rect
+        v-for="i,index in items"
+        :key="index"
+        :x="i.x"
+        :y="i.y"
+        width="50"
+        height="50"
+        stroke="black"></rect>
+      <line
+        v-for="j,index2 in items2"
+        :key="index2"
+        x1="0"
+        :y1="j.y"
+        x2="500"
+        :y2="j.y"
+        stroke="gray"
+        stroke-width="5"
+        ></line>
+    </svg>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "cafewall",
+      items: [],
+      items2: []
+    },
+    created: function(){
+      for(var i=0;i<5;i++){
+        for(var j=0;j<5;j++){
+          this.items.push({x:i*100, y:j*100});
+        }
+      }
+      for(var i=0;i<5;i++){
+        for(var j=0;j<5;j++){
+          this.items.push({x:i*100+25, y:j*100+50});
+        }
+      }
+      for(var i=0;i<10;i++){
+        this.items2.push({y:i*50})
+      }
+    }
+  });
+  </script>
+</body>
+</html>
