@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html height="10000px">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+  </style>
+</head>
+<body height="10000px">
+  <div id="root" height="10000px">
+    <title>{{title}}</title>
+    <div>
+      <input type="range" v-model:value.number="subHaba" min="1" max="15">
+      目盛間隔:{{subHaba}}[px]
+    </div>
+    <div>
+      <input type="range" v-model:value.number="length" min="1" max="100">
+      長さ:{{length}}
+      px:{{len_y_px}}
+    </div>
+    <div>
+      <input type="range" v-model:value.number="origin" min="0" max="100">
+      開始:{{origin}}
+    </div>
+    <div>
+      <button @click="view">画像生成</button>
+    </div>
+    <div>
+      <button @click="outsvg()">SVG出力</button>
+    </div>
+    <div>
+      <textarea v-text="memsvg"></textarea>
+    </div>
+    <div id="memView">
+      <svg width="300px" :height="len_y_px + 'px'" :viewBox="'0 0 300 ' + len_y_px">
+        <rect
+          x="0"
+          y="0"
+          width="300"
+          :height="len_y_px"
+          fill="black"
+          ></rect>
+          <line
+            v-for="i,index in lines"
+            :key="index"
+            :x1="i.x1"
+            :y1="i.y"
+            :x2="i.x2"
+            :y2="i.y"
+            stroke="white"
+            :stroke-width="i.width"
+            :class="i.class"
+            ></line>
+          <text
+            v-for="j,index2 in mems"
+            :key="index2"
+            :x="j.x"
+            :y="j.y"
+            stroke="white"
+            text-anchor="end"
+            >{{j.memt}}</text>
+      </svg>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "measure",
+      lines: [],
+      mems: [],
+      offsety: 20,
+      offsetx: 20,
+      subHaba: 5,
+      length: 3,
+      origin: 3,
+      memsvg: "",
+    },
+    methods:{
+      view: function(){
+        this.lines = [];
+        this.mems = [];
+        var subLength = this.length*10+1;
+        for(var i=0;i<subLength;i++){
+          var yp = i*this.subHaba;
+          var len = 0;
+          var memt = "";
+          var width = 1;
+          if (i % 10 == 0){
+            len=50;
+            memt = (this.origin - Math.floor(i/10)).toString();
+            width = 3;
+          }else{
+            len=30;
+          }
+          var x1 = 20;
+          var x2 = x1 + len;
+          this.lines.push({
+            y: yp+this.offsety,
+            x1: x1+this.offsetx,
+            x2: x2+this.offsetx,
+            width: width,
+          });
+          this.mems.push({
+            x: x1+this.offsetx,
+            y: yp+this.offsety+5,
+            memt: memt,
+          });
+        }
+      },
+      outsvg: function(){
+        var e = document.getElementById("memView");
+        this.memsvg = e.innerHTML;
+      }
+    },
+    mounted: function(){
+      this.view();
+    },
+    computed: {
+      len_y_px: function(){
+        return this.subHaba * this.length * 10 + 50;
+      },
+    }
+  });
+  </script>
+</body>
+</html>
