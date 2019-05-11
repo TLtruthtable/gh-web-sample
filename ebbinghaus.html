@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <span>
+      左右の中央の丸は、どちらが大きく見えますか?
+    </span>
+    <div>
+      <input type="range" v-model:value="r_out1" min=0 max=35>
+      {{r_out1}}
+    </div>
+    <div>
+      <input type="range" v-model:value="r_out2" min=0 max=35>
+      {{r_out2}}
+    </div>
+    <svg width="800" height="400" viewBox="0 0 800 400">
+      <circle
+        cx=200
+        cy=200
+        r=50
+        ></circle>
+      <circle
+        cx=500
+        cy=200
+        r=50
+        ></circle>
+      <defs>
+        <g id="c_out1">
+          <circle
+            :r=r_out1
+            ></circle>
+        </g>
+        <g id="c_out2">
+            <circle
+              :r=r_out2
+              ></circle>
+          </g>
+        </defs>
+      <use
+        v-for="i,index in angles"
+        :key="index"
+        xlink:href="#c_out1"
+        x=200
+        :y="140-r_out1"
+        :transform="'rotate(' + i + ', 200, 200)'"
+        ></use>
+      <use
+        v-for="i,index in angles"
+        :key="index"
+        xlink:href="#c_out2"
+        x=500
+        :y="140-r_out2"
+        :transform="'rotate(' + i + ', 500, 200)'"
+        ></use>
+    </svg>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "練習場",
+      r_out1: 10,
+      r_out2: 35,
+      angles:[
+        0, 45, 90, 135, 180, 225, 270, 315
+      ],
+    }
+  });
+  </script>
+</body>
+</html>
