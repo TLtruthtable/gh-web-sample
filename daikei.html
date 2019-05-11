@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html height="10000px">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+  </style>
+</head>
+<body height="10000px">
+  <div id="root" height="10000px">
+    <div>
+      <button @click="outsvg()">output SVG</button>
+    </div>
+    <div>
+      <textarea>{{txtsvg}}</textarea>
+    </div>
+    <div>
+      <input type="range" v-model:value="len" min=0 max=300 step="50">
+    </div>
+    <div>
+      <input type="range" v-model:value="g" min=0 max=255 step="10">
+    </div>
+    {{g}}
+    <div id="svgView">
+      <svg :width=len height="50" :viewBox="'0 0 '+len+' 50'">
+        <polygon
+          points="25,0 300,0 300,50 0,50"
+          :fill=c
+          ></polygon>
+      </svg>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      txtsvg: "",
+      len: 300,
+      g: 0,
+      c: "rgb(255, 0, 0)",
+    },
+    methods:{
+      outsvg: function(){
+        var e = document.getElementById("svgView");
+        this.txtsvg = e.innerHTML;
+      }
+    },
+    watch:{
+      g: function(){
+        this.c = "rgb(255," + this.g + ", 0)";
+      }
+    }
+  });
+  </script>
+</body>
+</html>
