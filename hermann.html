@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="gtm.js"></script>
+  <meta charset="UTF-8" />
+  <style>
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <div>
+      <input type="range" v-model:value="ptl" min="5" max="100">
+      {{ptl}}
+    </div>
+    <div>
+      <input type="range" v-model:value="wl" min="0" :max="ptl">
+      {{wl}}
+    </div>
+    <svg width="500" height="500" viewBox="0 0 500 500">
+      <defs>
+        <pattern
+          id="a"
+          :width="ptl"
+          :height="ptl"
+          patternUnits="userSpaceOnUse">
+          <rect
+            :width="l"
+            :height="l"
+            fill="black"
+            stroke="none">
+          </rect>
+        </pattern>
+      </defs>
+      <rect
+        fill="url(#a)"
+        x="0"
+        y="0"
+        width="500"
+        height="500">
+      </rect>
+    </svg>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "練習場",
+      ptl: 55,
+      wl: 5,
+    },
+    computed:{
+      l: function(){
+        return this.ptl - this.wl;
+      }
+    }
+  });
+  </script>
+</body>
+</html>
