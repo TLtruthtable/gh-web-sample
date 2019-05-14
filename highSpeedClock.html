@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="gtm.js"></script>
+  <meta charset="UTF-8" />
+  <style>
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <svg width="300" height="300" viewBox="0 0 300 300">
+      <circle
+        cx=150
+        cy=150
+        r=149
+        stroke="black"
+        fill="none"
+        ></circle>
+      <line
+        x1=150
+        y1=5
+        x2=150
+        y2=150
+        stroke="black"
+        transform="translate(150,150) rotate(0)"
+        >
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          repeatCount="indefinite"
+          :dur="(60/speed)+'s'"
+          from="0 150 150"
+          to="360 150 150"/>
+      </line>
+      <line
+        x1=150
+        y1=30
+        x2=150
+        y2=150
+        stroke="black"
+        stroke-width="3"
+        transform="translate(150,150) rotate(0)"
+        >
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          repeatCount="indefinite"
+          :dur="(60*60/speed)+'s'"
+          from="0 150 150"
+          to="360 150 150"/>
+      </line>
+      <line
+        x1=150
+        y1=90
+        x2=150
+        y2=150
+        stroke="black"
+        stroke-width="7"
+        transform="translate(150,150) rotate(0)"
+        >
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          repeatCount="indefinite"
+          :dur="(60*60*12/speed)+'s'"
+          from="0 150 150"
+          to="360 150 150"/>
+      </line>
+      <circle
+        cx="150"
+        cy="150"
+        r="145"
+        fill="none"
+        stroke="black"
+        stroke-width="5"
+        stroke-dasharray="1 14.17"
+        ></circle>
+      <circle
+        cx="150"
+        cy="150"
+        r="140"
+        fill="none"
+        stroke="black"
+        stroke-width="7"
+        stroke-dasharray="1 72.26"
+        ></circle>
+    </svg>
+    <div>
+      <input type="range" v-model:value="speed" min="1" max="600">
+      {{speed}}倍速
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "倍速時計",
+      speed: 1,
+    }
+  });
+  </script>
+</body>
+</html>
