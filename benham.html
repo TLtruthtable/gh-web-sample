@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="gtm.js"></script>
+  <meta charset="UTF-8" />
+  <style>
+    /* svg{
+      animation: rot 1.2ms linear infinite;
+    } */
+    @-webkit-keyframes rot{
+      0%{
+        transform: rotate(0deg)
+      }
+      100%{
+        transform: rotate(360deg)
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <svg width="300" height="300" boxView="0 0 300 300" :style="st">
+      <g id="koma">
+        <circle
+          cx="150"
+          cy="150"
+          r="149"
+          fill="none"
+          stroke="black"
+        ></circle>
+        <circle
+          v-for="i in r"
+          :key="i"
+          id="arc"
+          cx="150"
+          cy="150"
+          :r="i"
+          fill="none"
+          stroke="black"
+          stroke-width="5"
+          :stroke-dasharray="(i*2*3.14/8) + ' 1000'">
+        </circle>
+        <circle
+          v-for="i in r2"
+          :key="i"
+          id="arc"
+          cx="150"
+          cy="150"
+          :r="i"
+          fill="none"
+          stroke="black"
+          stroke-width="5"
+          :stroke-dasharray="(i*2*3.14/8) + ' 1000'"
+          transform="rotate(45, 150, 150)">
+        </circle>
+        <circle
+          v-for="i in r2"
+          :key="i"
+          id="arc"
+          cx="150"
+          cy="150"
+          :r="i"
+          fill="none"
+          stroke="black"
+          stroke-width="5"
+          :stroke-dasharray="(i*2*3.14/8) + ' 1000'"
+          transform="rotate(45, 150, 150)">
+        </circle>
+        <circle
+          v-for="i in r3"
+          :key="i"
+          id="arc"
+          cx="150"
+          cy="150"
+          :r="i"
+          fill="none"
+          stroke="black"
+          stroke-width="5"
+          :stroke-dasharray="(i*2*3.14/8) + ' 1000'"
+          transform="rotate(90, 150, 150)">
+        </circle>
+        <circle
+          v-for="i in r4"
+          :key="i"
+          id="arc"
+          cx="150"
+          cy="150"
+          :r="i"
+          fill="none"
+          stroke="black"
+          stroke-width="5"
+          :stroke-dasharray="(i*2*3.14/8) + ' 1000'"
+          transform="rotate(135, 150, 150)">
+        </circle>
+        <circle
+          id="arc"
+          cx="150"
+          cy="150"
+          r="75"
+          fill="none"
+          stroke="black"
+          stroke-width="150"
+          stroke-dasharray="235.5 1000"
+          transform="rotate(180, 150, 150)">
+        </circle>
+      </g>
+    </svg>
+    <div>
+      <input type="range" v-model:value="freq" min="1" max="1000" step="1">
+    </div>
+    <div>
+      回転速度:{{freq}}ms/1回転
+    </div>
+    <div>
+      回転数:{{rps}}[回/s]
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "練習場",
+      r: [30, 40, 50],
+      r2: [60, 70, 80],
+      r3: [90, 100, 110],
+      r4: [120, 130, 140],
+      freq: 1000,
+      // st: {animation: "rot 1.2ms linear infinite"}
+    },
+    computed: {
+      st: function(){
+        return {animation: "rot " + this.freq.toString() + "ms linear infinite"};
+      },
+      rps: function(){
+        return 1000/this.freq;
+      }
+    }
+  });
+  </script>
+</body>
+</html>
