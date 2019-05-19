@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="gtm.js"></script>
+  <meta charset="UTF-8" />
+  <style>
+    .disc{
+      font-size: 30px;
+    }
+    .tile{
+      display: inline-block;
+      width: 350px;
+      font-size: 60px;
+    }
+    label{
+      margin: 10px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      padding: 10px;
+      border: solid black 1px;
+    }
+    button{
+      font-size: 40px;
+      margin-top: 50px;
+      width: 300px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <div class="disc">{{title}}</div>
+    <ul>
+      <li>あの"意地悪漢字"をランダムに表示します</li>
+      <li>デバッグ・テストのお供に</li>
+      <li>オフラインで動きます</li>
+    </ul>
+    <div class="tile">
+      <label v-for="i,index in words" :key="index">{{i}}</label>
+    </div>
+    <div>
+      <button @click="shuf()">更新</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "意地悪漢字",
+      words: [],
+      guideWords: [
+        // 利用
+        "順", "権", "飽", "打", "手", "誤", "操",
+        // 境界
+        "未", "効", "過", "判", "同", "限", "超",
+        // UI
+        "感", "縮", "重", "欺", "隠", "統", "入",
+        // 実行
+        "断", "初", "書", "割", "飛", "路", "単", "待",
+        // システム
+        "互", "間", "応", "連", "全", "遅", "耐", "資",
+        // 仕様
+        "抜", "容", "識", "要", "異", "理",
+        // 組み合わせ
+        "満", "稀", "外", "独", "協", "禁",
+        // 事業
+        "劣", "裸", "政", "鈍", "欠", "流", "損",
+        // 保守
+        "障", "腐", "備", "響", "派", "代", "歪",
+        // 運営
+        "予", "延", "綻", "診", "滞", "詰", "計", "具",
+        // 情報整理/ドキュメント
+        "混", "漏", "消", "共", "特", "散", "合",
+        // 状態
+        "終", "中", "戻", "眠", "離", "再",
+        // 環境
+        "電", "時", "場", "規", "屋", "国",
+        // origin
+        "怠", "変", "測"
+      ]
+    },
+    created: function(){
+        this.shuf();
+    },
+    methods: {
+      shuf: function(){
+        this.words = [];
+        for(var i = 0;i<9;i++){
+          this.pushWord();
+        }
+      },
+      pushWord: function(){
+        var idx = Math.floor(Math.random() * this.guideWords.length)
+        var w = this.guideWords[idx];
+        this.words.push(w);
+      },
+    }
+  });
+  </script>
+</body>
+</html>
