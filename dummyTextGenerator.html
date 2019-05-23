@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <script src="gtm.js"></script>
+  <style>
+    .view{
+      width: 100%;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <div>
+      生成文字数(1～999999)
+      <input type="text" v-model:value.number="len">
+      <button @click="generate()">generate</button>
+    </div>
+    <div>
+      <textarea class="view">{{out}}</textarea>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "ダミーテキスト生成",
+      len: 10,
+      out: "",
+      seed: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+    },
+    methods: {
+      generate: function(){
+        this.out = "";
+        if(this.len <= 0){
+          return;
+        }
+        if(this.len >= 1000000){
+          return;
+        }
+        for(var i=0;i<this.len;i++){
+          var idx = Math.floor(Math.random() * this.seed.length);
+          this.out += this.seed[idx];
+        }
+      }
+    }
+  });
+  </script>
+</body>
+</html>
