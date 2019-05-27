@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="gtm.js"></script>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+#rest{font-size: 50px;}
+input{
+  font-size: 30px;
+}
+</style>
+</head>
+<body>
+<p>
+  <meter id="mt_rest" min=0 max=30 low=7 high=12 style="width:400px; height:50px;"></meter>
+  <span id="rest"　style="font-size:50px;"></span>
+</p>
+<p>
+  set<span id="sp_set"></span>
+</p>
+<p>
+  <span id="dbg"></span>
+</p>
+<p>
+  時刻設定
+  <input id="l" value="25/55" type="button" style=
+"width:100px;height:100px;"/>
+  <input id="c" value="10" type="button" style=
+"width:100px;height:100px;"/>
+  <input id="r" value="20" type="button" style=
+"width:100px;height:100px;"/>
+</p>
+<p>
+  時間設定
+  <input id="dl" value="1min" type="button" style=
+"width:100px;height:100px;"/>
+  <input id="dc" value="5min" type="button" style=
+"width:100px;height:100px;"/>
+  <input id="dr" value="10min" type="button" style=
+"width:100px;height:100px;"/>
+</p>
+
+
+<script>
+var nowDate = new Date();
+var setDate = new Date();
+var rest_ms = 0;
+var rest_min = 0;
+
+var mt_rest = document.getElementById("mt_rest");
+var rest = document.getElementById("rest");
+var dbg = document.getElementById("dbg");
+var l = document.getElementById("l");
+var c = document.getElementById("c");
+var r = document.getElementById("r");
+var sp_set = document.getElementById(
+"sp_set");
+var dl = document.getElementById("dl");
+var dc = document.getElementById("dc");
+var dr = document.getElementById("dr");
+
+
+function createSetDate(dt, setMin){
+  var min = dt.getMinutes();
+  if(min > setMin){
+    dt.setHours(dt.getHours()+1);
+  }
+  dt.setMinutes(setMin);
+  dt.setSeconds(0);
+  return dt;
+}
+
+function clip(val){
+  if(val < 0){
+    val = 0;
+  }
+  return val;
+}
+
+function rf_sp_set(){
+  sp_set.innerHTML = " ";
+  sp_set.innerHTML += setDate.getHours();
+  sp_set.innerHTML += ":";
+  if(setDate.getMinutes() <= 9){
+    sp_set.innerHTML += "0";
+  }
+  sp_set.innerHTML += setDate.getMinutes();
+}
+
+setInterval(function(){
+  var msg_head = "";
+  nowDate = new Date();
+  rest_ms = setDate - nowDate;
+  //dbg.innerHTML = setDate.toString();
+  //dbg.innerHTML += nowDate.toString();
+
+  rest_min = Math.floor(rest_ms / 1000 / 60);
+  
+  if(rest_min < 0){
+    msg_head = "";
+    rest.style.color = "red";
+    l.style.backgroundColor = "red";
+    c.style.backgroundColor = "red";
+    r.style.backgroundColor = "red";
+    dl.style.backgroundColor = "red";
+    dc.style.backgroundColor = "red";
+    dr.style.backgroundColor = "red";
+  }
+  else{
+    msg_head = "";
+    rest.style.color = "blue";
+    l.style.backgroundColor = "#ccc";
+    c.style.backgroundColor = "#ccc";
+    r.style.backgroundColor = "#ccc";
+    dl.style.backgroundColor = "#ccc";
+    dc.style.backgroundColor = "#ccc";
+    dr.style.backgroundColor = "#ccc";
+  }
+  rest_min = clip(rest_min);
+  
+  mt_rest.value = rest_min;
+  rest.innerHTML = msg_head + rest_min.toString();
+  rf_sp_set();
+}, 100);
+
+l.addEventListener("click", function(){
+  setDate = new Date();
+  // setDate = createSetDate(setDate, 25);  
+  var min = setDate.getMinutes();
+  if((min >= 25) && (min < 55)){
+    // 現在時刻が25~54分なら、55分にセット
+    setDate = createSetDate(setDate, 55);
+  }
+  else{
+    setDate = createSetDate(setDate, 25);
+  }
+});
+
+c.addEventListener("click", function(){
+  setDate = new Date();
+  setDate = createSetDate(setDate, 10);  
+});
+
+r.addEventListener("click", function(){
+  setDate = new Date();
+  setDate = createSetDate(setDate, 20);  
+});
+
+dl.addEventListener("click", function(){
+  setDate = new Date();
+  // 1min未満切り捨てのため
+  setDate = createSetDate(setDate, setDate.getMinutes()+2);
+});
+
+dc.addEventListener("click", function(){
+  setDate = new Date();
+  setDate = createSetDate(setDate, setDate.getMinutes()+6);
+});
+
+dr.addEventListener("click", function(){
+  setDate = new Date();
+  setDate = createSetDate(setDate, setDate.getMinutes()+11);
+});
+
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
