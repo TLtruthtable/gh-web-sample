@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <script src="gtm.js"></script>
+  <style>
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <button @click="addCounter()">add Counter</button>
+    <button @click="save()">save</button>
+    <div v-for="i,index in items" :key="index">
+      <button @click="dec(index)">-</button>
+      <button @click="inc(index)">+</button>
+      <meter :value="i.val" :max="meter_max" :min="meter_min"></meter>
+      <span>{{i.val}}</span>
+      <input type="text" v-model:value="i.text">
+      <button @click="reset(index)">reset</button>
+      <button @click="del(index)">del</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "multiCounter",
+      items: [
+        {text: "", val: 0}
+      ],
+      meter_max: 10,
+      meter_min: 0,
+    },
+    methods: {
+      addCounter: function(){
+        this.items.push({text: "", val: 0});
+      },
+      inc: function(idx){
+        this.items[idx].val++;
+      },
+      dec: function(idx){
+        this.items[idx].val--;
+      },
+      reset: function(idx){
+        this.items.splice(idx, 1, {text:"", val: 0});
+      },
+      del: function(idx){
+        this.items.splice(idx, 1);
+      },
+      save: function(){
+        localStorage.setItem('meter_property', JSON.stringify(this.items));
+      },
+      load: function(){
+        var prop = localStorage.getItem('meter_property');
+        if(prop){
+          this.items = JSON.parse(localStorage.getItem('meter_property'));
+        }
+      },
+    },
+    watch: {
+      items: function(){
+        save();
+      }
+    },
+    mounted: function(){
+      this.load();
+    }
+  });
+  </script>
+</body>
+</html>
