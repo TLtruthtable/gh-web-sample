@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <script src="gtm.js"></script>
+  <style>
+    .cntBtn{
+      width: 100px;
+      height: 30px;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <div>
+      <input type="text" v-model:value="btnName">
+      <button @click="createButton">create</button>
+    </div>
+    <select-btn v-for="btn, idx in btns" :key="idx" :val="btn.val" @pushed="add"></select-btn>
+    <!-- <select-btn val="x" @pushed="add"></select-btn>
+    <select-btn val="y" @pushed="add"></select-btn>
+    <select-btn val="z" @pushed="add"></select-btn> -->
+    <div>
+      <ul>
+        <record
+          v-for="i,index in items"
+          :key="index"
+          :text="i.text"
+          :hour="i.hour"
+          :min="i.min"
+          :sec="i.sec"
+        ></record>
+      </ul>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script>
+  "use strict";
+
+  const comp = {
+    template: "<li>{{hour}}:{{min}}:{{sec}},{{text}}</li>",
+    props: ["hour","min","sec","text"],
+  }
+
+  const selectBtn = {
+    props: ["val"],
+    template: "<button class='cntBtn' @click='inc'>{{val}}:{{cnt}}回</button>",
+    data: function(){
+      return{
+        cnt: 0,
+      }
+    },
+    methods: {
+      inc: function(){
+        this.cnt++;
+        this.$emit("pushed", this.val);
+      }
+    }
+  }
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "multiLogger",
+      items: [],
+      btns: [],
+      btnName: "",
+    },
+    components: {
+      "record": comp,
+      "select-btn": selectBtn, 
+    },
+    methods: {
+      add: function(str){
+        var dt = new Date();
+        var min = dt.getMinutes();
+        var hour = dt.getHours();
+        var sec = dt.getSeconds();
+        this.items.push({
+          "hour": hour,
+          "min": min,
+          "sec": sec,
+          "text": str,
+        });
+      },
+      createButton: function(){
+        this.btns.push({"val": this.btnName});
+        this.btnName = "";
+      }
+    }
+  });
+  </script>
+</body>
+</html>
