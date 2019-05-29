@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <script src="gtm.js"></script>
+  <style>
+    .numform{
+      width: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <title>{{title}}</title>
+    <div>
+      <div>
+        項目:
+        <input type="text" v-model:value="koumoku" list="koumokulist">
+      </div>
+      <div>
+        完成度:
+        <input type="text" class="numform" list="itemlist" v-model:value="kansei">
+        有意義度:
+        <input type="text" class="numform" list="itemlist" v-model:value="yuuigi">
+        気分の良さ:
+        <input type="text" class="numform" list="itemlist" v-model:value="kibun">
+      </div>
+      <div>
+        備考:
+        <input type="text" v-model:value="remark">
+      </div>
+      <div>
+        <button @click="save">save</button>
+      </div>
+      <textarea v-if="exportEnable" :value="exportForm"></textarea>
+      <datalist id="itemlist">
+        <option v-for="i,index in items" :key="index" :value="i">{{i}}</option>
+      </datalist>
+      <datalist id="koumokulist">
+        <option v-for="i,index in koumoku_cache" :key="index" :value="i">{{i}}</option>
+      </datalist>
+      </div>
+    <div>
+      <button @click="exportLogs">export</button>
+    </div>
+    <ol>
+      <li v-for="i, index in log" :key="index">
+        {{i.koumoku}},{{i.kansei}},{{i.yuuigi}},{{i.kibun}},{{i.remark}}
+      </li>
+    </ol>
+    <div>
+      <button @click="clearLogs">clear logs</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script>
+  "use strict";
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "",
+      items: ["5", "4", "3", "2", "1"],
+      koumoku_cache: [],
+      koumoku: "",
+      kansei: "",
+      yuuigi: "",
+      kibun: "",
+      remark: "",
+      log: [],
+      exportEnable: false,
+      exportForm: "",
+    },
+    mounted: function(){
+      var prop = localStorage.getItem('mustLogger_log');
+      if(prop){
+        this.log = JSON.parse(localStorage.getItem('mustLogger_log'));
+      }
+      else{
+        this.log = [];
+      }
+
+      prop = localStorage.getItem('mustLogger_koumoku_cache');
+      if(prop){
+        this.koumoku_cache = JSON.parse(localStorage.getItem('mustLogger_koumoku_cache'));
+      }
+      else{
+        this.koumoku_cache = [];
+      }
+    },
+    methods: {
+      save: function(){
+        this.log.push({
+          "koumoku": this.koumoku,
+          "kansei": this.kansei,
+          "yuuigi": this.yuuigi,
+          "kibun": this.kibun,
+          "remark": this.remark,
+        });
+        this.koumoku_cache.push(this.koumoku);
+        localStorage.setItem("mustLogger_log", JSON.stringify(this.log));
+        localStorage.setItem("mustLogger_koumoku_cache", JSON.stringify(this.koumoku_cache));
+        this.clearForm();
+      },
+      clearForm: function(){
+        this.koumoku = "";
+        this.kansei = "";
+        this.yuuigi = "";
+        this.kibun = "";
+        this.remark = "";
+      },
+      exportLogs: function(){
+        this.exportEnable = true;
+        this.exportForm = JSON.stringify(this.log);
+      },
+      clearLogs: function(){
+        var ans = window.confirm("delete logs?");
+        if(ans === true){
+          localStorage.setItem("mustLogger_log","");
+          localStorage.setItem("mustLogger_koumoku_cache","");
+          this.log = [];
+          this.koumoku_cache = [];
+        }
+      }
+    }
+  });
+  </script>
+</body>
+</html>
