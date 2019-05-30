@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <script src="gtm.js"></script>
+  <style>
+    #mynetwork{
+      width: 100%;
+      height: 600px;
+      border: 1px solid black;
+    }
+    .ui{
+      height: 30px;
+      margin-bottom: 30px;
+      margin-top: 10px;
+    }
+    .ui *{
+      height: 100%;
+      font-size: 15pt;
+    }
+  </style>
+</head>
+<body>
+  <div id="mynetwork"></div>
+  <div id="root">
+    <title>{{title}}</title>
+    <div class="ui">
+      from
+      <input type="text" v-model:value="in_from" list="nodelist">
+      to
+      <input type="text" v-model:value="in_to" list="nodelist">
+      <button @click="addCounter()">add edge</button>
+      <!-- <button @click="save()">save</button> -->
+    </div>
+    <div class="ui">
+      node
+      <input type="text" v-model:value="in_remove" list="nodelist">
+      <button @click="removeNode()">remove node</button>
+    </div>
+    <div v-for="i,index in items" :key="index">
+      <button @click="del(index)">del</button>
+      {{i.from}} - 
+      {{i.to}}
+    </div>
+    <datalist id="nodelist">
+      <option v-for="i,index in node_cache_sorted" :key="index" :value="i">{{i}}</option>
+    </datalist>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.js"></script>
+  <script>
+  "use strict";
+
+  // ノードの定義
+  var nodes = new vis.DataSet();
+
+  // エッジの定義
+  var edges = new vis.DataSet();
+
+  // グラフの定義(ノードとエッジ)
+  var data = {
+    nodes: nodes,
+    edges: edges
+  };
+
+  var options = {
+      physics: true, // 物理シミュレーション
+      nodes: {
+            shape: 'box', // ノードの形をellipseからboxに
+            size: 20, //　ノードの大きさ
+      },
+      edges: {
+            arrows: 'to', // エッジに矢印を付けて有向グラフにする
+            smooth: false // falseにするとエッジが直線になる
+      },
+      // configure: {
+      //   enabled: true,
+      //   showButton: true,
+      // }
+  };
+
+  // create a network
+  var container = document.getElementById('mynetwork');
+  var nw = new vis.Network(container, data, options);
+
+  var app = new Vue({
+    el: '#root',
+    data: {
+      title: "vizEditor",
+      items: [],
+      in_from: "",
+      in_to: "",
+      in_remove: "",
+      node_cache: [],
+    },
+    methods: {
+      addCounter: function(){
+        // 表示用配列に追加
+        this.items.push({from: this.in_from, to: this.in_to});
+
+        // キャッシュ配列に、ラベル追加
+        this.node_cache.push(this.in_from);
+        this.node_cache.push(this.in_to);
+
+        try{
+          nodes.add([{id: this.in_from, label: this.in_from}]);
+        }catch(err){
+        }
+        try{
+          nodes.add([{id: this.in_to, label: this.in_to}]);
+        }catch(err){
+        }
+        try{
+          edges.add(
+            {id: this.in_from+"_"+this.in_to, from: this.in_from, to: this.in_to}
+          );
+        }catch(err){
+        }
+
+        // フォームクリア
+        this.in_from = "";
+        this.in_to = "";
+
+      },
+      reset: function(idx){
+        this.items.splice(idx, 1, {from: "", to: ""});
+      },
+      del: function(idx){
+        var delFrom = this.items[idx].from;
+        var delTo = this.items[idx].to;
+        this.items.splice(idx, 1);
+        try{
+          edges.remove([{id: delFrom+"_"+delTo}]);
+        }catch(err){
+          console.log(err);
+        }
+      },
+      removeNode: function(){
+        try{
+          nodes.remove([{id: this.in_remove}]);
+        }catch(err){
+          console.log(err);
+        }
+
+        // キャッシュから、削除対象のノードを消す
+        var idx = this.node_cache.findIndex((v) => v === this.in_remove);
+        this.node_cache.splice(idx, 1);
+
+        // フォームのクリア
+        this.in_remove = "";
+      },
+      save: function(){
+        localStorage.setItem('vizEditor', JSON.stringify(this.items));
+      },
+      load: function(){
+        var prop = localStorage.getItem('vizEditor');
+        if(prop){
+          this.items = JSON.parse(localStorage.getItem('vizEditor'));
+        }
+      },
+    },
+    watch: {
+    },
+    computed: {
+      node_cache_sorted: function(){
+        return this.node_cache.filter(function(x, i, self){
+          return self.indexOf(x) === i;
+        }).sort(function(x, y){
+          return y > x;
+        });
+      }
+    },
+    mounted: function(){
+      this.load();
+    }
+  });
+  </script>
+</body>
+</html>
