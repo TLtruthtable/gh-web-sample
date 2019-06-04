@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="gtm.js"></script>
+<meta charset="UTF-8" />
+
+<style>
+.pasteArea{
+  display: block;
+  width: 100%;
+  height: 100px;
+}
+.viewSt{
+  width: 40px;
+}
+</style>
+</head>
+<body>
+<div id="root">
+  <title>{{title}}</title>
+  <ol>
+    使い方
+    <li>ブラウザのポップアップブロック機能をOFFにする</li>
+    <li>テキストボックスに、検索キーワードを入力</li>
+    <li>URL生成ボタンを押す</li>
+    <li>
+      まとめて検索ボタンを押す
+      <ul>
+        <li>検索タブが1つだけ開きます</li>
+        <li>ブラウザの「戻る」ボタンで、次の検索結果を表示します</li>
+      </ul>
+    </li>
+    <li>「-{{windowLimit}}」「+{{windowLimit}}」ボタンで、次の範囲に移動する</li>
+  </ol>
+  <ul display="block">
+    <li>
+      まとめて検索テキストボックス
+      <textarea class="pasteArea" v-model:value="lines"></textarea>
+    </li>
+    <li>
+      <button @click="genUrl()">
+        URL生成
+      </button>
+      <button @click="allWindowOpen()">
+        まとめて検索
+      </button>
+      <span>{{view_ptStart}}行目〜{{ptEnd}}行目</span>
+    </li>
+    <li>
+      <input type="text" class="viewSt" v-model:value.number="view_ptStart">行目から検索
+      <button @click="decPtStart()">
+        -{{windowLimit}}
+      </button>
+      <button @click="incPtStart()">
+        +{{windowLimit}}
+      </button>
+    </li>
+    <li><input type="range" v-model:value.number="wait_s" min="1" max="30">sleep:{{wait_s}}[s]</li>
+    <li>line:{{line}}</li>
+    <li>生成URLs:{{urls}}</li>
+  </ul>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="chrome-extension://lkfkkhfhhdkiemehlpkgjeojomhpccnh/lib/transpilers/babel-polyfill.min.js"></script><script>
+"use strict";
+
+var app = new Vue({
+  el: '#root',
+  data: {
+    title: "まとめて検索_単独タブ版",
+    lines: "",
+    urls: [],
+    baseUrl: "https://www.google.com/search?q=",
+    windowLimit: 20,
+    view_ptStart: 1,
+    urlsQueue: [],
+    wait_s: 1,
+    search: null,
+    windowHandler: null,
+  },
+  methods: {
+    allWindowOpen: function allWindowOpen() {
+      clearInterval(this.search);
+      this.genUrl();
+      this.urlsQueue = [];
+      for (var i = this.ptStart; i < this.ptEnd; i++) {
+        if (i < this.urls.length) {
+          this.urlsQueue.push(this.urls[i]);
+        }
+      }
+      this.windowHandler = window.open();
+      this.search = setInterval(function () {
+        if (app.urlsQueue.length >= 1) {
+          app.windowHandler.location.href = app.urlsQueue[0];
+          app.urlsQueue.shift();
+        }
+      }, app.wait_s * 1000);
+    },
+    genUrl: function genUrl(q) {
+      this.urls = [];
+      for (var i = 0; i < this.line.length; i++) {
+        var u = this.baseUrl + this.line[i];
+        this.urls.push(u);
+      }
+      return this.urls;
+    },
+    incPtStart: function incPtStart() {
+      this.view_ptStart += this.windowLimit;
+    },
+    decPtStart: function decPtStart() {
+      this.view_ptStart -= this.windowLimit;
+      if (this.view_ptStart <= 0) {
+        this.view_ptStart = 1;
+      }
+    }
+  },
+  computed: {
+    line: function line() {
+      return splitLines(this.lines);
+    },
+    ptStart: function ptStart() {
+      return this.view_ptStart - 1;
+    },
+    ptEnd: function ptEnd() {
+      return this.view_ptStart + this.windowLimit - 1;
+    }
+  }
+});
+
+function splitLines(lines) {
+  var ret = lines.split('\n');
+  return ret;
+}
+//# sourceURL=userscript.js
+</script>
+</body>
+</html>
