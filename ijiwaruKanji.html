@@ -12,6 +12,11 @@
       width: 350px;
       font-size: 60px;
     }
+    .catTile{
+      display: inline-block;
+      width: 250px;
+      font-size: 60px;
+    }
     label{
       margin: 10px;
       margin-top: 20px;
@@ -38,6 +43,9 @@
     </ul>
     <div class="tile">
       <label v-for="i,index in words" :key="index">{{i}}</label>
+    </div>
+    <div>
+      <label class="catTile">{{selCategory}}</label>
     </div>
     <div>
       <button @click="shuf()">更新</button>
@@ -75,7 +83,7 @@
         "障", "腐", "備", "響", "派", "代", "歪",
         // 運営
         "予", "延", "綻", "診", "滞", "詰", "計", "具",
-        // 情報整理/ドキュメント
+        // 情報整理/ドキュメント/資料
         "混", "漏", "消", "共", "特", "散", "合",
         // 状態
         "終", "中", "戻", "眠", "離", "再",
@@ -83,7 +91,14 @@
         "電", "時", "場", "規", "屋", "国",
         // origin
         "怠", "変", "測"
-      ]
+      ],
+      categoryWords:[
+        "利用", "境界", "UI",
+        "実行", "システム", "仕様",
+        "組合せ", "事業", "保守",
+        "運営", "資料", "状態",
+        "環境", "リソース"],
+      selCategory:"",
     },
     created: function(){
         this.shuf();
@@ -94,9 +109,11 @@
         for(var i = 0;i<9;i++){
           this.pushWord();
         }
+        var idx = Math.floor(Math.random() * this.categoryWords.length);
+        this.selCategory = this.categoryWords[idx];
       },
       pushWord: function(){
-        var idx = Math.floor(Math.random() * this.guideWords.length)
+        var idx = Math.floor(Math.random() * this.guideWords.length);
         var w = this.guideWords[idx];
         this.words.push(w);
       },
