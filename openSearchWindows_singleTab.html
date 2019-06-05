@@ -37,6 +37,7 @@
       まとめて検索テキストボックス
       <textarea class="pasteArea" v-model:value="lines"></textarea>
     </li>
+    <li>検索行数:<input type="text" v-model:value.number="windowLimit" min="1"></li>
     <li>
       <button @click="genUrl()">
         URL生成
